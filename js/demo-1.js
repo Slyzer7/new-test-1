@@ -1,38 +1,38 @@
-(function() {
+(function () {
 
-    var width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;
-
-    // Main
+     // Main
     initHeader();
-    initAnimation();
-    addListeners();
+
+    "use strict";
+    /*jslint browser:true */
+    var width, height, header, canvas, ctx, points, target, animateHeader = true;
 
     function initHeader() {
         width = window.innerWidth;
         height = window.innerHeight;
-        target = {x: width/2, y: height/2};
+        target = {x: width / 2, y: height / 2};
 
-        largeHeader = document.getElementById('large-header');
-        largeHeader.style.height = height+'px';
+        header = document.getElementById("header");
+        header.style.height = height + "px";
 
-        canvas = document.getElementById('demo-canvas');
+        canvas = document.getElementById("demo-canvas");
         canvas.width = width;
         canvas.height = height;
-        ctx = canvas.getContext('2d');
+        ctx = canvas.getContext("2d");
 
         // create points
         points = [];
-        for(var x = 0; x < width; x = x + width/20) {
-            for(var y = 0; y < height; y = y + height/20) {
-                var px = x + Math.random()*width/20;
-                var py = y + Math.random()*height/20;
+        for (var x = 0; x < width; x = x + width / 13) {
+            for(var y = 0; y < height; y = y + height / 13) {
+                var px = x + Math.random()*width / 13;
+                var py = y + Math.random()*height / 13;
                 var p = {x: px, originX: px, y: py, originY: py };
                 points.push(p);
             }
         }
 
         // for each point find the 5 closest points
-        for(var i = 0; i < points.length; i++) {
+        for (var i = 0; i < points.length; i++) {
             var closest = [];
             var p1 = points[i];
             for(var j = 0; j < points.length; j++) {
@@ -63,18 +63,18 @@
 
         // assign a circle to each point
         for(var i in points) {
-            var c = new Circle(points[i], 2+Math.random()*2, 'rgba(255,255,255,0.3)');
+            var c = new Circle(points[i], 2+Math.random()*2, "rgba(255,255,255,0.3)");
             points[i].circle = c;
         }
     }
 
     // Event handling
     function addListeners() {
-        if(!('ontouchstart' in window)) {
-            window.addEventListener('mousemove', mouseMove);
+        if(!("ontouchstart" in window)) {
+            window.addEventListener("mousemove", mouseMove);
         }
-        window.addEventListener('scroll', scrollCheck);
-        window.addEventListener('resize', resize);
+        window.addEventListener("scroll", scrollCheck);
+        window.addEventListener("resize", resize);
     }
 
     function mouseMove(e) {
@@ -99,7 +99,7 @@
     function resize() {
         width = window.innerWidth;
         height = window.innerHeight;
-        largeHeader.style.height = height+'px';
+        header.style.height = height+"px";
         canvas.width = width;
         canvas.height = height;
     }
@@ -153,7 +153,7 @@
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p.closest[i].x, p.closest[i].y);
-            ctx.strokeStyle = 'rgba(156,217,249,'+ p.active+')';
+            ctx.strokeStyle = "rgba(156,217,249,"+ p.active+")";
             ctx.stroke();
         }
     }
@@ -172,7 +172,7 @@
             if(!_this.active) return;
             ctx.beginPath();
             ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, 2 * Math.PI, false);
-            ctx.fillStyle = 'rgba(156,217,249,'+ _this.active+')';
+            ctx.fillStyle = "rgba(156,217,249,"+ _this.active+")";
             ctx.fill();
         };
     }
@@ -181,5 +181,9 @@
     function getDistance(p1, p2) {
         return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
     }
+
+    //Animation
+    initAnimation();
+    addListeners();
     
 })();
